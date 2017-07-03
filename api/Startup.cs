@@ -28,8 +28,9 @@ namespace DotnetStatus
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddConsole();
             services.AddSingleton<ILoggerFactory>(loggerFactory);
+
             services.AddMvc();
-            
+
             services.AddScoped<IXmlClient, XmlClient>();
             services.AddScoped<IJsonClient, JsonClient>();
             services.AddScoped<IPackageStatusService, NuGetStatusService>();
@@ -38,6 +39,7 @@ namespace DotnetStatus
         public virtual void Configure(IApplicationBuilder app)
         {
             app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute("status", "api/status/gh/{*path}",

@@ -16,7 +16,7 @@ To get the status of your dependencies, simply:
 curl "http://dotnet-status.com/api/status/gh/{USER}/{PROJECT}/{BRANCH}/{PATH_TO_CSPROJ}.csproj/"
 ```
 
-An example, for this repository:
+An example, for the [JsonApiDotNetCore](https://github.com/Research-Institute/json-api-dotnet-core) repository:
 
 ```bash
 curl "http://dotnet-status.com/api/status/gh/Research-Institute/json-api-dotnet-core/master/src/JsonApiDotNetCore/JsonApiDotNetCore.csproj/"
@@ -70,3 +70,10 @@ curl "http://dotnet-status.com/api/status/gh/Research-Institute/json-api-dotnet-
    ]
 }
 ```
+
+## Development
+
+#### Pre-Requisites
+
+- .Net Core (see `dotnet-status.csproj` for current version)
+- Ember CLI
