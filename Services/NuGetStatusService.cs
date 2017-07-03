@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using DotnetHealth.Services.Http;
+using DotnetStatus.Services.Http;
 using Semver;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotnetHealth.Services
+namespace DotnetStatus.Services
 {
     public class NuGetStatusService : IDisposable
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-health", "dotnet-health.csproj", "{5DBC1FE2-9D59-44B9-B7E8-EAD2B28C2957}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-status", "dotnet-status.csproj", "{5DBC1FE2-9D59-44B9-B7E8-EAD2B28C2957}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

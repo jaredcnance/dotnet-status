@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace DotnetHealth.Services.Http
+namespace DotnetStatus.Services.Http
 {
     [XmlRoot("Project")]
     public class Csproj

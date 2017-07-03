@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DotnetHealth.Services.Http
+namespace DotnetStatus.Services.Http
 {
     public class Nuget
     {

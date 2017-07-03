@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace DotnetHealth.Services.Http
+namespace DotnetStatus.Services.Http
 {
     public class XmlClient : IDisposable
     {

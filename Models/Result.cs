@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Semver;
 
-namespace DotnetHealth.Services.Http
+namespace DotnetStatus.Services.Http
 {
     public class Result
     {

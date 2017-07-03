@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using DotnetHealth.Services;
+using DotnetStatus.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 
-namespace DotnetHealth.Controllers
+namespace DotnetStatus.Controllers
 {
     public class PackageStatusController : Controller
     {
