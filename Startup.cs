@@ -32,7 +32,6 @@ namespace DotnetHealth
         public virtual void Configure(IApplicationBuilder app)
         {
             app.UseDefaultFiles();
-            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute("status", "api/status/gh/{*path}",
