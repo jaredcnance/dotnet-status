@@ -30,6 +30,8 @@ namespace DotnetHealth
 
         public virtual void Configure(IApplicationBuilder app)
         {
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
