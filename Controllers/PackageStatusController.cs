@@ -39,6 +39,6 @@ namespace DotnetHealth.Controllers
             return Ok(result);
         }
 
-        private string GetGithubLink(string path) => $"https://raw.githubusercontent.com/{path}";
+        private string GetGithubLink(string path) => $"https://raw.githubusercontent.com/{path}".TrimEnd('/');
     }
 }
