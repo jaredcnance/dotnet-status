@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DotnetStatus.Services;
+using DotnetStatus.Services.Http;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,10 @@ namespace DotnetStatus
             loggerFactory.AddConsole();
             services.AddSingleton<ILoggerFactory>(loggerFactory);
             services.AddMvc();
+            
+            services.AddScoped<IXmlClient, XmlClient>();
+            services.AddScoped<IJsonClient, JsonClient>();
+            services.AddScoped<IPackageStatusService, NuGetStatusService>();
         }
 
         public virtual void Configure(IApplicationBuilder app)
@@ -35,7 +41,7 @@ namespace DotnetStatus
             app.UseMvc(routes =>
             {
                 routes.MapRoute("status", "api/status/gh/{*path}",
-                        defaults: new { controller = "PackageStatus", action = "Get" });
+                        defaults: new { controller = "GitHubPackageStatus", action = "GetGithub" });
             });
         }
     }

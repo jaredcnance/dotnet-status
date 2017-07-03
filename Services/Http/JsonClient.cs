@@ -1,11 +1,12 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace DotnetStatus.Services.Http
 {
-    public class JsonClient : IDisposable
+    public class JsonClient : IJsonClient
     {
         private readonly HttpClient _client;
 
@@ -14,15 +15,18 @@ namespace DotnetStatus.Services.Http
             _client = new HttpClient();
         }
 
-        public async Task<T> GetAsync<T>(string uri)
+        public async Task<T> GetAsync<T>(string uri) where T : class
         {
             var response = await _client.GetAsync(uri);
-            
-            if(response.IsSuccessStatusCode == false)
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            if (response.IsSuccessStatusCode == false)
                 throw new HttpRequestException($"Request to {uri} failed with status {response.StatusCode}");
 
             var body = await response.Content.ReadAsStringAsync();
-            
+
             return JsonConvert.DeserializeObject<T>(body);
         }
 
