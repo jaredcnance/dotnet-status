@@ -24,6 +24,7 @@ namespace DotnetHealth
         public void ConfigureServices(IServiceCollection services)
         {
             var loggerFactory = new LoggerFactory();
+            loggerFactory.AddConsole();
             services.AddSingleton<ILoggerFactory>(loggerFactory);
             services.AddMvc();
         }
@@ -32,7 +33,11 @@ namespace DotnetHealth
         {
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("status", "api/status/gh/{*path}",
+                        defaults: new { controller = "PackageStatus", action = "Get" });
+            });
         }
     }
 }

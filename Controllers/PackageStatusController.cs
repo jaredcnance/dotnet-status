@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using DotnetHealth.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Logging;
 
 namespace DotnetHealth.Controllers
 {
-    [Route("api/[controller]")]
     public class PackageStatusController : Controller
     {
         private readonly ILogger<PackageStatusController> _log;
@@ -17,12 +17,28 @@ namespace DotnetHealth.Controllers
             _statusService = new NuGetStatusService();
             _log = log;
         }
-
-        [HttpGet("{csprojUrl}")]
-        public async Task<IActionResult> Get(string csprojUrl)
+        
+        // api/status/gh/{*path}
+        public async Task<IActionResult> Get()
         {
-            var result = await _statusService.GetStatusAsync(csprojUrl);
+            var route = Request.Path.Value.Split('/').ToList();
+            
+            // api/status/gh/{*path} -> {*path}
+            route.RemoveRange(0, 4);
+
+            var formattedRoute = string.Join("/", route);
+
+            _log.LogInformation($"routes: {formattedRoute}");
+
+            var link = GetGithubLink(formattedRoute);
+
+            _log.LogInformation($"link: {link}");
+            
+            var result = await _statusService.GetStatusAsync(link);
+
             return Ok(result);
-        }        
+        }
+
+        private string GetGithubLink(string path) => $"https://raw.githubusercontent.com/{path}";
     }
 }

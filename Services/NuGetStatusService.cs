@@ -20,7 +20,6 @@ namespace DotnetHealth.Services
 
         public async Task<Result> GetStatusAsync(string csprojUrl)
         {
-            csprojUrl = System.Net.WebUtility.UrlDecode(csprojUrl);
             var csproj = await _xmlClient.GetAsync<Csproj>(csprojUrl);
 
             var result = new Result();
