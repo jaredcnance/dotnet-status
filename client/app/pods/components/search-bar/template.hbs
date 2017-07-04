@@ -1,0 +1,15 @@
+<form>
+{{search-bar/search-inputs user=user repo=repo branch=branch path=path}}
+
+<p>
+    {{#if loading}}
+    <button class="button" disabled>
+        {{fa-icon "spinner" spin=true size="2"}}
+    </button>
+    {{else}}
+    <button class="button" {{action "search"}} type="submit">
+        {{fa-icon "stethoscope" size="2"}}
+    </button>
+    {{/if}}
+</p>
+</form>

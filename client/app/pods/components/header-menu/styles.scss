@@ -1,0 +1,11 @@
+@import 'app/styles/theme';
+
+& {
+    background-color: $light-grey;
+    font: $font-header;
+}
+
+h1 {
+    margin: 0px;
+    padding: 10px;
+}

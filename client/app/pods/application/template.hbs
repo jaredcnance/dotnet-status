@@ -1,0 +1,13 @@
+<div class="main-content">
+    {{header-menu}}
+    {{search-bar searchAction=(action "search") loading=loading}}
+    {{request-path path=searchUrl}}
+    {{package-result displayResults=displayResults results=results}}
+    {{#if displayResults}}
+        <center><small>
+            <a href="https://github.com/badges/shields/pull/1028" target="_blank">
+                Status Badges Coming Soon! 
+            </a>
+        </small></center>
+    {{/if}}
+</div>

@@ -5,7 +5,8 @@ dotnet project dependencies.
 
 ## Requirements
 
-Your project must be using the new `*.csproj` file format.
+- Your project must be using the new `*.csproj` file format.
+- Your GitHub repository must be public
 
 ## API
 
@@ -76,4 +77,5 @@ curl "http://dotnet-status.com/api/status/gh/Research-Institute/json-api-dotnet-
 #### Pre-Requisites
 
 - .Net Core (see `dotnet-status.csproj` for current version)
+- Yarn
 - Ember CLI

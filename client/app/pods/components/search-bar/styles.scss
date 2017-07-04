@@ -1,0 +1,26 @@
+@import 'app/styles/theme';
+& {
+  background-color: $blue;
+  padding: 20px;
+  color: #fff;
+}
+
+.button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  max-width: 400px;
+  min-width: 400px;
+  border: 0px;
+  background-color: $grey-blue;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.3em;
+  &:hover {
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: $light-grey;
+    color: $grey-blue;
+  }
+}

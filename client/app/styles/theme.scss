@@ -1,0 +1,18 @@
+$blue: #1985A1;
+$light-grey: #DCDCDD;
+$grey: #C5C3C6;
+$dark-grey: #46494C;
+$grey-blue: #4C5C68;
+$green: #62D785;
+$red: #FF3E20;
+
+$font-header: 'PT Sans', sans-serif;
+$font-body:  'Open Sans', sans-serif; /* 'PT Serif', sans-serif;*/
+
+.positive {
+  color: $green;
+}
+
+.negative {
+  color: $red;
+}

@@ -1,0 +1,11 @@
+@import 'app/styles/theme';
+& {
+  margin: 10px;
+}
+
+input {
+  font-size: 1.3em;
+  padding: 10px;
+  width: 300px;
+  font-family: $font-body;
+}

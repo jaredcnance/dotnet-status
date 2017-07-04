@@ -1,0 +1,24 @@
+@import 'theme';
+body {
+  font-family: $font-body;
+}
+
+.main-content {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+}
+
+h1 {
+  font-size: 1.7em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -30,16 +30,21 @@ namespace DotnetStatus
             services.AddSingleton<ILoggerFactory>(loggerFactory);
 
             services.AddMvc();
+            services.AddCors();
 
             services.AddScoped<IXmlClient, XmlClient>();
             services.AddScoped<IJsonClient, JsonClient>();
             services.AddScoped<IPackageStatusService, NuGetStatusService>();
         }
 
-        public virtual void Configure(IApplicationBuilder app)
+        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            if (env.IsDevelopment())
+                app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute("status", "api/status/gh/{*path}",

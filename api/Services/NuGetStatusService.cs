@@ -4,6 +4,7 @@ using DotnetStatus.Services.Http;
 using Semver;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace DotnetStatus.Services
 {
@@ -11,13 +12,16 @@ namespace DotnetStatus.Services
     {
         private readonly IXmlClient _xmlClient;
         private readonly IJsonClient _jsonClient;
+        private readonly ILogger<NuGetStatusService> _log;
 
         public NuGetStatusService(
             IXmlClient xmlClient,
-            IJsonClient jsonClient)
+            IJsonClient jsonClient,
+            ILogger<NuGetStatusService> log)
         {
             _xmlClient = xmlClient;
             _jsonClient = jsonClient;
+            _log = log;
         }
 
         public async Task<Result> GetStatusAsync(string csprojUrl)
@@ -25,7 +29,10 @@ namespace DotnetStatus.Services
             var csproj = await _xmlClient.GetAsync<Csproj>(csprojUrl);
 
             if (csproj == null)
+            {
+                _log.LogInformation($"Could not locate {csprojUrl}");
                 return null;
+            }
 
             var result = new Result();
             foreach (var package in csproj.ItemGroups.SelectMany(ig => ig.PackageReferences))
@@ -34,7 +41,10 @@ namespace DotnetStatus.Services
 
                 var nuget = await _jsonClient.GetAsync<Nuget>(uri);
                 if (nuget == null)
+                {
+                    _log.LogInformation($"Could not locate {uri} on NuGet");
                     return null;
+                }
 
                 var latestStable = GetLatestStableVersion(nuget.Versions);
                 result.Packages.Add(new PackageResult

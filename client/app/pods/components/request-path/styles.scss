@@ -1,0 +1,8 @@
+@import 'app/styles/theme';
+& {
+  text-align: center;
+  font-size: 1.3em;
+  font: $font-body;
+  padding: 10px;
+  min-height: 30px;
+}
