@@ -31,10 +31,6 @@ namespace DotnetStatus
 
             services.AddMvc();
             services.AddCors();
-
-            services.AddScoped<IXmlClient, XmlClient>();
-            services.AddScoped<IJsonClient, JsonClient>();
-            services.AddScoped<IPackageStatusService, NuGetStatusService>();
         }
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)

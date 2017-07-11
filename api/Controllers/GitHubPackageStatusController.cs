@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using DotnetStatus.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,13 +9,10 @@ namespace DotnetStatus.Controllers
     public class GitHubPackageStatusController : Controller
     {
         private readonly ILogger<GitHubPackageStatusController> _log;
-        private readonly IPackageStatusService _statusService;
 
         public GitHubPackageStatusController(
-            IPackageStatusService packageStatusService,
             ILogger<GitHubPackageStatusController> log)
         {
-            _statusService = packageStatusService;
             _log = log;
         }
 
@@ -40,12 +36,12 @@ namespace DotnetStatus.Controllers
 
             _log.LogInformation($"link: {link}");
 
-            var result = await _statusService.GetStatusAsync(link);
+            // var result = await _statusService.GetStatusAsync(link);
 
-            if (result == null)
-                return NotFound();
+            // if (result == null)
+            return NotFound();
 
-            return Ok(result);
+            //return Ok(result);
         }
 
         private string GetGithubLink(string path) => $"https://raw.githubusercontent.com/{path}".TrimEnd('/');
