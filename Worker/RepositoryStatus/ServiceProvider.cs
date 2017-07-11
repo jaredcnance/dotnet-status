@@ -3,10 +3,11 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NuGet.Common;
-using DotnetStatus.Worker.Services;
-using DotnetStatus.Worker.Services.NuGet;
 using MongoDB.Driver;
-using Core.Data;
+using DotnetStatus.Core.Data;
+using DotnetStatus.Core.Configuration;
+using DotnetStatus.Core.Services;
+using DotnetStatus.Core.Services.NuGet;
 
 namespace DotnetStatus.Worker
 {

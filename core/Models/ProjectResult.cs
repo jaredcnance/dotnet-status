@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DotnetStatus.Core
+namespace DotnetStatus.Core.Models
 {
     public class ProjectResult
     {

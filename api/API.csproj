@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>DotnetStatus</AssemblyName>
     <OutputType>Exe</OutputType>
+    <StartupObject>DotnetStatus.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />

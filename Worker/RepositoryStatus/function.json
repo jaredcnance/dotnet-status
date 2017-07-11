@@ -1,0 +1,14 @@
+﻿{
+  "scriptFile": "..\\bin\\Worker.dll",
+  "entryPoint": "LogFunctionsWeb.Elasticsearch.ElasticsearchLogImport.Run",
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "payloadDescriptor",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "es-worker",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}

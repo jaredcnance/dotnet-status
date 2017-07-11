@@ -1,11 +1,11 @@
 ﻿using DotnetStatus.Core.Models;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace Core.Data
+namespace DotnetStatus.Core.Data
 {
     public interface IRepositoryResultService
     {
-        Task SaveAsync(RepositoryResult repoStatus, CancellationToken cancellationToken);
+        Task SaveAsync(RepositoryResult repoStatus);
+        Task<RepositoryResult> GetAsync(string id);
     }
 }

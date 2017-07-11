@@ -5,10 +5,11 @@ using NuGet.Configuration;
 using System.Threading;
 using NuGet.Common;
 using NuGet.Versioning;
+using DotnetStatus.Core.Models;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    class PackageStatusRepository : IPackageStatusRepository
+    public class PackageStatusRepository : IPackageStatusRepository
     {
         private List<(PackageMetadataResource MetadataResource, string Source)> _packageMetaDataResources = new List<(PackageMetadataResource MetadataResource, string Source)>();
         private readonly ILogger _log;

@@ -4,11 +4,11 @@ using NuGet.ProjectModel;
 using System.Collections.Generic;
 using System.IO;
 using NuGet.LibraryModel;
-using DotnetStatus.Core;
+using DotnetStatus.Core.Models;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    class DependencyGraphService : IDependencyGraphService
+    public class DependencyGraphService : IDependencyGraphService
     {
         private readonly IPackageStatusStore _packageStatusStore;
 
@@ -30,7 +30,7 @@ namespace DotnetStatus.Worker.Services.NuGet
 
         private DependencyGraphSpec GetDependencyGraph(string path)
         {
-            var json = File.ReadAllTextAsync(path).GetAwaiter().GetResult();
+            var json = File.ReadAllText(path);
             var obj = (JObject)JsonConvert.DeserializeObject(json);
             return new DependencyGraphSpec(obj);
         }

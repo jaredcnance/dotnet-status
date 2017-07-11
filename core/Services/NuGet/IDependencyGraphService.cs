@@ -1,9 +1,9 @@
-﻿using DotnetStatus.Core;
+﻿using DotnetStatus.Core.Models;
 using System.Collections.Generic;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    interface IDependencyGraphService
+    public interface IDependencyGraphService
     {
         List<ProjectResult> GetProjectResults(string dependencyGraphPath);
     }

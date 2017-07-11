@@ -1,13 +1,14 @@
-﻿using DotnetStatus.Core;
+﻿using DotnetStatus.Core.Configuration;
+using DotnetStatus.Core.Models;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    class RestoreService : IRestoreService
+    public class RestoreService : IRestoreService
     {
         private readonly string _nugetPath;
         private readonly string _args;

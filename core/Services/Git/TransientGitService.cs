@@ -1,11 +1,12 @@
-﻿using LibGit2Sharp;
+﻿using DotnetStatus.Core.Configuration;
+using LibGit2Sharp;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 
-namespace DotnetStatus.Worker
+namespace DotnetStatus.Core.Services
 {
-    class TransientGitService : ITransientGitService, IDisposable
+    public class TransientGitService : ITransientGitService, IDisposable
     {
         private readonly string _rootDirectory;
         private readonly int _cleanupTimeout;

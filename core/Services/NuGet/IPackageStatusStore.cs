@@ -1,9 +1,10 @@
-﻿using NuGet.Configuration;
+﻿using DotnetStatus.Core.Models;
+using NuGet.Configuration;
 using System.Collections.Generic;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    interface IPackageStatusStore
+    public interface IPackageStatusStore
     {
         PackageStatus GetStatus(string packageId);
         void ReloadSources(IList<PackageSource> sources);

@@ -1,4 +1,4 @@
-﻿namespace Core.Data
+﻿namespace DotnetStatus.Core.Data
 {
     public class DatabaseConfiguration
     {

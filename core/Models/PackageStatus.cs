@@ -1,9 +1,9 @@
 ﻿using NuGet.Versioning;
 using System.Collections.Generic;
 
-namespace DotnetStatus.Worker
+namespace DotnetStatus.Core.Models
 {
-    class PackageStatus
+    public class PackageStatus
     {
         public NuGetVersion LatestStable { get; set; }
         public NuGetVersion Latest { get; set; }

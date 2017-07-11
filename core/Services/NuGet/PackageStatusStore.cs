@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using NuGet.Configuration;
+using DotnetStatus.Core.Models;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    class PackageStatusStore : IPackageStatusStore
+    public class PackageStatusStore : IPackageStatusStore
     {
         private readonly IPackageStatusRepository _repository;
         private readonly Dictionary<string, PackageStatus> _cachedStatuses =  new Dictionary<string, PackageStatus>();

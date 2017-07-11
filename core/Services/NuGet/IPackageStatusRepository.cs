@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using NuGet.Configuration;
+using DotnetStatus.Core.Models;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    interface IPackageStatusRepository
+    public interface IPackageStatusRepository
     {
         PackageStatus GetStatus(string packageId);
         void LoadPackageMetadataResources(IList<PackageSource> sources);

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DotnetStatus.Worker
+namespace DotnetStatus.Core.Configuration
 {
-    class WorkerConfiguration
+    public class WorkerConfiguration
     {
         public string SourceRootDirectory { get; set; }
         public string DependencyGraphFileName { get; set; }

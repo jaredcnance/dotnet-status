@@ -1,10 +1,9 @@
 ﻿using DotnetStatus.Core.Models;
 using MongoDB.Driver;
 using Microsoft.Extensions.Options;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace Core.Data
+namespace DotnetStatus.Core.Data
 {
     public class RepositoryResultService : IRepositoryResultService
     {
@@ -17,17 +16,17 @@ namespace Core.Data
             _config = options.Value;
         }
 
-        public async Task SaveAsync(RepositoryResult repoStatus, CancellationToken cancellationToken)
+        public async Task SaveAsync(RepositoryResult repoStatus)
         {
             var collection = GetCollection();
             var filter = Builders<RepositoryResult>.Filter.Eq("_id", repoStatus.Id);
             var result = await collection.FindOneAndReplaceAsync(filter, repoStatus);
 
             if (result == null)
-                await collection.InsertOneAsync(repoStatus, new InsertOneOptions(), cancellationToken);
+                await collection.InsertOneAsync(repoStatus, new InsertOneOptions());
         }
 
-        public async Task<RepositoryResult> GetAsync(string id, CancellationToken cancellationToken)
+        public async Task<RepositoryResult> GetAsync(string id)
         {
             var collection = GetCollection();
             var filter = Builders<RepositoryResult>.Filter.Eq("_id", id);

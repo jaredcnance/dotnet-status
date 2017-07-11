@@ -1,8 +1,9 @@
 ﻿using DotnetStatus.Core;
+using DotnetStatus.Core.Models;
 
-namespace DotnetStatus.Worker.Services.NuGet
+namespace DotnetStatus.Core.Services.NuGet
 {
-    interface IRestoreService
+    public interface IRestoreService
     {
         RestoreStatus Restore(string projectPath, string dependencyGraphOutputPath);
     }

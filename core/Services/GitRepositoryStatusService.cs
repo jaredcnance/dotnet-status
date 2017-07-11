@@ -1,12 +1,13 @@
-﻿using Core.Data;
+﻿using DotnetStatus.Core.Configuration;
+using DotnetStatus.Core.Data;
 using DotnetStatus.Core.Models;
-using DotnetStatus.Worker.Services.NuGet;
+using DotnetStatus.Core.Services.NuGet;
 using Microsoft.Extensions.Options;
-using System.Threading;
+using System.Threading.Tasks;
 
-namespace DotnetStatus.Worker.Services
+namespace DotnetStatus.Core.Services
 {
-    class GitRepositoryStatusService : IGitRepositoryStatusService
+    public class GitRepositoryStatusService : IGitRepositoryStatusService
     {
         private readonly ITransientGitService _gitService;
         private readonly IRestoreService _restoreService;
@@ -28,22 +29,31 @@ namespace DotnetStatus.Worker.Services
             _repository = repository;
         }
 
-        public RepositoryResult GetRepositoryStatus(string repositoryUrl)
+        public async Task<RepositoryResult> GetRepositoryStatusAsync(string repositoryUrl)
         {
             var repoPath = _gitService.GetSource(repositoryUrl);
             var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
             var status = _restoreService.Restore(repoPath, dependencyGraphPath);
 
             if (status.Success == false)
-                return new RepositoryResult(repositoryUrl, status);
+                return await GetFailedResultAsync(repositoryUrl, status);
 
             var projectResults = _dependencyGraphService.GetProjectResults(dependencyGraphPath);
 
             var result = new RepositoryResult(repositoryUrl, status, projectResults);
 
-            _repository.SaveAsync(result, CancellationToken.None).Wait();
+            await _repository.SaveAsync(result);
 
             return result;
+        }
+
+        private async Task<RepositoryResult> GetFailedResultAsync(string repositoryUrl, RestoreStatus status)
+        {
+            var failedResult = new RepositoryResult(repositoryUrl, status);
+
+            await _repository.SaveAsync(failedResult);
+
+            return failedResult;
         }
     }
 }
