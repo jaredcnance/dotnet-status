@@ -5,15 +5,21 @@ using Microsoft.Extensions.DependencyInjection;
 using NuGet.Common;
 using DotnetStatus.Worker.Services;
 using DotnetStatus.Worker.Services.NuGet;
+using MongoDB.Driver;
+using Core.Data;
 
 namespace DotnetStatus.Worker
 {
     class ServiceProvider
     {
         private const string _configSectionName = "dotnetStatus";
+        private const string _dataSectionName = "data";
+
+        private readonly IConfiguration _config;
 
         public ServiceProvider(IConfiguration config)
         {
+            _config = config;
             Build(config);
         }
 
@@ -26,6 +32,7 @@ namespace DotnetStatus.Worker
             services.AddOptions();
 
             services.Configure<WorkerConfiguration>(options => config.GetSection(_configSectionName).Bind(options));
+            services.Configure<DatabaseConfiguration>(options => config.GetSection(_dataSectionName).Bind(options));
 
             var builder = new ContainerBuilder();
 
@@ -52,7 +59,18 @@ namespace DotnetStatus.Worker
             builder.RegisterType<Logger>()
                 .As<ILogger>();
 
+            AddRepositoryStatusServices(builder);
+
             Instance = builder.Build();
+        }
+
+        private void AddRepositoryStatusServices(ContainerBuilder builder)
+        {
+            builder.RegisterType<RepositoryStatusRepository>()
+                .As<IRepositoryStatusRepository>();
+
+            builder.RegisterInstance(new MongoClient(_config["Data:ConnectionString"]))
+                .As<IMongoClient>();
         }
     }
 

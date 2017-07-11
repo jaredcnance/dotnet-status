@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using DotnetStatus.Worker.Services;
-
 namespace DotnetStatus.Worker
 {
     partial class Program
