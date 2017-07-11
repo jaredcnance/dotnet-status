@@ -6,40 +6,40 @@ using System.Threading.Tasks;
 
 namespace Core.Data
 {
-    public class RepositoryStatusRepository : IRepositoryStatusRepository
+    public class RepositoryStatusService : IRepositoryStatusService
     {
         private readonly IMongoClient _client;
         private readonly DatabaseConfiguration _config;
 
-        public RepositoryStatusRepository(IOptions<DatabaseConfiguration> options, IMongoClient mongoClient)
+        public RepositoryStatusService(IOptions<DatabaseConfiguration> options, IMongoClient mongoClient)
         {
             _client = mongoClient;
             _config = options.Value;
         }
 
-        public async Task SaveAsync(RepositoryStatusResult repoStatus, CancellationToken cancellationToken)
+        public async Task SaveAsync(RepositoryResult repoStatus, CancellationToken cancellationToken)
         {
             var collection = GetCollection();
-            var filter = Builders<RepositoryStatusResult>.Filter.Eq("_id", repoStatus.Id);
+            var filter = Builders<RepositoryResult>.Filter.Eq("_id", repoStatus.Id);
             var result = await collection.FindOneAndReplaceAsync(filter, repoStatus);
 
             if (result == null)
                 await collection.InsertOneAsync(repoStatus, new InsertOneOptions(), cancellationToken);
         }
 
-        public async Task<RepositoryStatusResult> GetAsync(string id, CancellationToken cancellationToken)
+        public async Task<RepositoryResult> GetAsync(string id, CancellationToken cancellationToken)
         {
             var collection = GetCollection();
-            var filter = Builders<RepositoryStatusResult>.Filter.Eq("_id", id);
+            var filter = Builders<RepositoryResult>.Filter.Eq("_id", id);
             var cursor = await collection.FindAsync(filter);
             var result = await cursor.FirstOrDefaultAsync();
             return result;
         }
 
-        private IMongoCollection<RepositoryStatusResult> GetCollection()
+        private IMongoCollection<RepositoryResult> GetCollection()
         {
             var db = _client.GetDatabase(_config.DatabaseName);
-            var collection = db.GetCollection<RepositoryStatusResult>(nameof(RepositoryStatusResult).ToLower());
+            var collection = db.GetCollection<RepositoryResult>(nameof(RepositoryResult));
             return collection;
         }
     }

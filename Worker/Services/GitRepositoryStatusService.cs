@@ -12,14 +12,14 @@ namespace DotnetStatus.Worker.Services
         private readonly IRestoreService _restoreService;
         private readonly IDependencyGraphService _dependencyGraphService;
         private readonly string _dgFileName;
-        private readonly IRepositoryStatusRepository _repository;
+        private readonly IRepositoryStatusService _repository;
 
         public GitRepositoryStatusService(
             ITransientGitService transientGitService,
             IRestoreService restoreService,
             IDependencyGraphService dependencyGraphService,
             IOptions<WorkerConfiguration> options,
-            IRepositoryStatusRepository repository)
+            IRepositoryStatusService repository)
         {
             _gitService = transientGitService;
             _restoreService = restoreService;
@@ -28,18 +28,18 @@ namespace DotnetStatus.Worker.Services
             _repository = repository;
         }
 
-        public RepositoryStatusResult GetRepositoryStatus(string repositoryUrl)
+        public RepositoryResult GetRepositoryStatus(string repositoryUrl)
         {
             var repoPath = _gitService.GetSource(repositoryUrl);
             var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
             var status = _restoreService.Restore(repoPath, dependencyGraphPath);
 
             if (status.Success == false)
-                return new RepositoryStatusResult(repositoryUrl, status);
+                return new RepositoryResult(repositoryUrl, status);
 
             var projectResults = _dependencyGraphService.GetProjectResults(dependencyGraphPath);
 
-            var result = new RepositoryStatusResult(repositoryUrl, status, projectResults);
+            var result = new RepositoryResult(repositoryUrl, status, projectResults);
 
             _repository.SaveAsync(result, CancellationToken.None).Wait();
 
