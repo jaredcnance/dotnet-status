@@ -12,14 +12,14 @@ namespace DotnetStatus.Worker.Services
         private readonly IRestoreService _restoreService;
         private readonly IDependencyGraphService _dependencyGraphService;
         private readonly string _dgFileName;
-        private readonly IRepositoryStatusService _repository;
+        private readonly IRepositoryResultService _repository;
 
         public GitRepositoryStatusService(
             ITransientGitService transientGitService,
             IRestoreService restoreService,
             IDependencyGraphService dependencyGraphService,
             IOptions<WorkerConfiguration> options,
-            IRepositoryStatusService repository)
+            IRepositoryResultService repository)
         {
             _gitService = transientGitService;
             _restoreService = restoreService;

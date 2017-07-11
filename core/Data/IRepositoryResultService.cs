@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Core.Data
 {
-    public interface IRepositoryStatusService
+    public interface IRepositoryResultService
     {
         Task SaveAsync(RepositoryResult repoStatus, CancellationToken cancellationToken);
     }

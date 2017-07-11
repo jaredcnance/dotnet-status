@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Core.Data
 {
-    public class RepositoryStatusService : IRepositoryStatusService
+    public class RepositoryResultService : IRepositoryResultService
     {
         private readonly IMongoClient _client;
         private readonly DatabaseConfiguration _config;
 
-        public RepositoryStatusService(IOptions<DatabaseConfiguration> options, IMongoClient mongoClient)
+        public RepositoryResultService(IOptions<DatabaseConfiguration> options, IMongoClient mongoClient)
         {
             _client = mongoClient;
             _config = options.Value;

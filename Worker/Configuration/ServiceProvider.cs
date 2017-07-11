@@ -66,8 +66,8 @@ namespace DotnetStatus.Worker
 
         private void AddRepositoryStatusServices(ContainerBuilder builder)
         {
-            builder.RegisterType<RepositoryStatusService>()
-                .As<IRepositoryStatusService>();
+            builder.RegisterType<RepositoryResultService>()
+                .As<IRepositoryResultService>();
 
             builder.RegisterInstance(new MongoClient(_config["Data:ConnectionString"]))
                 .As<IMongoClient>();
