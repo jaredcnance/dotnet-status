@@ -19,4 +19,10 @@
     <PackageReference Include="NuGet.Versioning" Version="4.3.0-preview3-4168" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

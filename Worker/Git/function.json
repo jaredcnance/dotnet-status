@@ -1,0 +1,14 @@
+﻿{
+  "scriptFile": "..\\bin\\netstandard2.0\\Worker.dll",
+  "entryPoint": "Worker.Git.GetStatus.Run",
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "gitRepositoryUrl",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "git-processor",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}

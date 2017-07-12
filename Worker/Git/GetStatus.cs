@@ -1,19 +1,18 @@
 ﻿using Autofac;
 using DotnetStatus.Core.Services;
+using DotnetStatus.Worker;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Threading.Tasks;
 
-namespace DotnetStatus.Worker
+namespace Worker.Git
 {
-    partial class Program
+    public class GetStatus
     {
         private static IContainer ServiceProvider;
 
-        //private static string testUrl = "https://github.com/Research-Institute/json-api-dotnet-core.git";
-        //private static string testUrl = "https://github.com/jaredcnance/dotnet-status.git";
-        private static string testUrl = "https://github.com/jaredcnance/dotnet-status-test.git";
-
-        static void Main(string[] args)
+        public static async Task Run(string gitRepositoryUrl, TraceWriter log)
         {
             Configure();
             
@@ -22,22 +21,25 @@ namespace DotnetStatus.Worker
                 using (var scope = ServiceProvider.BeginLifetimeScope())
                 {
                     var service = scope.Resolve<IGitRepositoryStatusService>();
-                    var repositoryStatus = service.GetRepositoryStatusAsync(testUrl).GetAwaiter().GetResult();
-                    Console.WriteLine("Complete");
+                    var repositoryStatus = await service.GetRepositoryStatusAsync(gitRepositoryUrl);
+
+                    log.Info("Complete");
+
                     // TODO: enqueue the status
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Fail");
+                log.Error("Fail");
             }
-
-            Console.ReadLine();
         }
 
         private static void Configure()
         {
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables();
+
             var config = builder.Build();
             ServiceProvider = new ServiceProvider(config).Instance;
         }

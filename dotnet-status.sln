@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26621.2
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API.csproj", "{48CCE52D-1764-4906-BBE1-50734E624270}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", ".\api\API.csproj", "{48CCE52D-1764-4906-BBE1-50734E624270}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", "..\Worker\Worker.csproj", "{62845921-0FB6-4F2A-B966-49BDAE052A55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", ".\worker\Worker.csproj", "{62845921-0FB6-4F2A-B966-49BDAE052A55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Core\Core.csproj", "{949277F6-5826-46F1-B5EE-0719B73AB52C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", ".\core\Core.csproj", "{949277F6-5826-46F1-B5EE-0719B73AB52C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
