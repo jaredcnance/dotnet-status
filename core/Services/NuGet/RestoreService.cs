@@ -21,7 +21,7 @@ namespace DotnetStatus.Core.Services.NuGet
             _timeout = options.Value.RestoreTimeoutMilliseconds;
         }
 
-        public RestoreStatus Restore(string projectPath, string dependencyGraphOutputPath)
+        public RestoreStatus Restore(string projectPath)
         {
             var psi = new ProcessStartInfo(Path.GetFullPath(_nugetPath), _args)
             {
@@ -31,8 +31,6 @@ namespace DotnetStatus.Core.Services.NuGet
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             };
-
-            SetEnvironmentVariables(psi, dependencyGraphOutputPath);
 
             var exitCode = 1;
 
@@ -70,17 +68,6 @@ namespace DotnetStatus.Core.Services.NuGet
             {
                 p.Dispose();
             }
-        }
-
-        private void SetEnvironmentVariables(ProcessStartInfo psi, string dependencyGraphOutputPath)
-        {
-#if !IS_CORECLR
-            psi.EnvironmentVariables["NUGET_PERSIST_DG"] = "True";
-            psi.EnvironmentVariables["NUGET_PERSIST_DG_PATH"] = dependencyGraphOutputPath;
-#else
-            psi.Environment["NUGET_PERSIST_DG"] = "True";
-            psi.Environment["NUGET_PERSIST_DG_PATH"] = dependencyGraphOutputPath;
-#endif
         }
 
         private static async Task ConsumeStreamReaderAsync(StreamReader reader, StringBuilder lines)

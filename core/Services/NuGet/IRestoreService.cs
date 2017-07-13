@@ -5,6 +5,6 @@ namespace DotnetStatus.Core.Services.NuGet
 {
     public interface IRestoreService
     {
-        RestoreStatus Restore(string projectPath, string dependencyGraphOutputPath);
+        RestoreStatus Restore(string projectPath);
     }
 }

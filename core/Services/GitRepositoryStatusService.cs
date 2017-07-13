@@ -32,12 +32,12 @@ namespace DotnetStatus.Core.Services
         public async Task<RepositoryResult> GetRepositoryStatusAsync(string repositoryUrl)
         {
             var repoPath = _gitService.GetSource(repositoryUrl);
-            var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
-            var status = _restoreService.Restore(repoPath, dependencyGraphPath);
+            var status = _restoreService.Restore(repoPath);
 
             if (status.Success == false)
                 return await GetFailedResultAsync(repositoryUrl, status);
 
+            var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
             var projectResults = _dependencyGraphService.GetProjectResults(dependencyGraphPath);
 
             var result = new RepositoryResult(repositoryUrl, status, projectResults);
