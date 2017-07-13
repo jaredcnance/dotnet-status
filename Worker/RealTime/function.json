@@ -1,6 +1,6 @@
 ﻿{
-  "scriptFile": "..\\bin\\netstandard2.0\\Worker.dll",
-  "entryPoint": "Worker.Git.GetStatus.Run",
+  "scriptFile": "..\\bin\\net462\\Worker.dll",
+  "entryPoint": "Worker.RealTime.GetStatus.Run",
   "disabled": false,
   "bindings": [
     {

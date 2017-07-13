@@ -8,14 +8,13 @@ using DotnetStatus.Core.Data;
 using DotnetStatus.Core.Configuration;
 using DotnetStatus.Core.Services;
 using DotnetStatus.Core.Services.NuGet;
+using Core.Services.Git;
+using Core.Services;
 
-namespace DotnetStatus.Worker
+namespace Worker.RealTime
 {
     class ServiceProvider
     {
-        private const string _configSectionName = "dotnetStatus";
-        private const string _dataSectionName = "data";
-
         private readonly IConfiguration _config;
 
         public ServiceProvider(IConfiguration config)
@@ -32,8 +31,8 @@ namespace DotnetStatus.Worker
 
             services.AddOptions();
 
-            services.Configure<WorkerConfiguration>(options => config.GetSection(_configSectionName).Bind(options));
-            services.Configure<DatabaseConfiguration>(options => config.GetSection(_dataSectionName).Bind(options));
+            services.Configure<WorkerConfiguration>(options => config.GetSection("dotnetStatus").Bind(options));
+            services.Configure<DatabaseConfiguration>(options => config.GetSection("data").Bind(options));
 
             var builder = new ContainerBuilder();
 
@@ -45,7 +44,13 @@ namespace DotnetStatus.Worker
             builder.RegisterType<TransientGitService>()
                 .AsImplementedInterfaces();
 
+            builder.RegisterType<LibGit2SharpService>()
+                .AsImplementedInterfaces();
+
             builder.RegisterType<DependencyGraphService>()
+                .AsImplementedInterfaces();
+
+            builder.RegisterType<JsonFileReader>()
                 .AsImplementedInterfaces();
 
             builder.RegisterType<PackageStatusStore>()
@@ -74,5 +79,4 @@ namespace DotnetStatus.Worker
                 .As<IMongoClient>();
         }
     }
-
 }
