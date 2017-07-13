@@ -1,20 +1,23 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using NuGet.ProjectModel;
 using System.Collections.Generic;
-using System.IO;
 using NuGet.LibraryModel;
 using DotnetStatus.Core.Models;
+using Core.Services;
 
 namespace DotnetStatus.Core.Services.NuGet
 {
     public class DependencyGraphService : IDependencyGraphService
     {
         private readonly IPackageStatusStore _packageStatusStore;
+        private readonly ITypedReader _typedReader;
 
-        public DependencyGraphService(IPackageStatusStore packageStatusStore)
+        public DependencyGraphService(
+            IPackageStatusStore packageStatusStore, 
+            ITypedReader typedReader)
         {
             _packageStatusStore = packageStatusStore;
+            _typedReader = typedReader;
         }
 
         public List<ProjectResult> GetProjectResults(string dependencyGraphPath)
@@ -30,9 +33,8 @@ namespace DotnetStatus.Core.Services.NuGet
 
         private DependencyGraphSpec GetDependencyGraph(string path)
         {
-            var json = File.ReadAllText(path);
-            var obj = (JObject)JsonConvert.DeserializeObject(json);
-            return new DependencyGraphSpec(obj);
+            var dg = _typedReader.ReadAt<JObject>(path);
+            return new DependencyGraphSpec(dg);
         }
 
         private ProjectResult GetProjectResult(PackageSpec proj)

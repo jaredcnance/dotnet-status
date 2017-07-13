@@ -2,6 +2,8 @@
 {
     public class RestoreStatus
     {
+        public RestoreStatus() { }
+
         public RestoreStatus(string output, string errors, int exitCode, bool success)
         {
             Output = output;
