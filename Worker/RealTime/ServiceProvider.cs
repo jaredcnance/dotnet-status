@@ -10,6 +10,8 @@ using DotnetStatus.Core.Services;
 using DotnetStatus.Core.Services.NuGet;
 using Core.Services.Git;
 using Core.Services;
+using Microsoft.Extensions.Options;
+using Worker.Helpers;
 
 namespace Worker.RealTime
 {
@@ -36,7 +38,9 @@ namespace Worker.RealTime
 
             var builder = new ContainerBuilder();
 
-            builder.Populate(services);
+            // HACK: this shim is required because the function runtime is loading in
+            // a version of Autofac where the 'Populate' method is not defined
+            builder.PopulateShim(services);
 
             builder.RegisterType<GitRepositoryStatusService>()
                 .AsImplementedInterfaces();

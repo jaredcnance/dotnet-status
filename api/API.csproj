@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFrameworks>net462</TargetFrameworks>
     <AssemblyName>DotnetStatus</AssemblyName>
     <OutputType>Exe</OutputType>
     <StartupObject>DotnetStatus.Program</StartupObject>
@@ -29,5 +29,8 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0-preview1-final" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\core\Core.csproj" />
   </ItemGroup>
 </Project>

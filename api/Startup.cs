@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Core.Configuration;
+using Core.Messaging;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,11 @@ namespace DotnetStatus
 
             services.AddMvc();
             services.AddCors();
+
+            services.AddOptions();
+
+            services.Configure<AzureStorageConfiguration>(options => Config.GetSection("AzureStorage").Bind(options));
+            services.AddScoped<IPublishStringMessage, AzureQueueService>();
         }
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -39,11 +46,7 @@ namespace DotnetStatus
             if (env.IsDevelopment())
                 app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute("status", "api/status/gh/{*path}",
-                        defaults: new { controller = "GitHubPackageStatus", action = "GetGithub" });
-            });
+            app.UseMvc();
         }
     }
 }

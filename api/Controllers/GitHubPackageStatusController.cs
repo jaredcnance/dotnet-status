@@ -2,48 +2,33 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using Core.Messaging;
 
 namespace DotnetStatus.Controllers
 {
     public class GitHubPackageStatusController : Controller
     {
         private readonly ILogger<GitHubPackageStatusController> _log;
+        private readonly IPublishStringMessage _publish;
 
         public GitHubPackageStatusController(
-            ILogger<GitHubPackageStatusController> log)
+            ILogger<GitHubPackageStatusController> log,
+            IPublishStringMessage publish)
         {
             _log = log;
+            _publish = publish;
         }
 
-        // api/status/gh/{*path}
-        public async Task<IActionResult> GetGithub()
+        [HttpGet("/api/status/gh/{user}/{repo}")]
+        public async Task<IActionResult> GetGithub(string user, string repo)
         {
-            var route = Request.Path.Value.Split('/').ToList();
-            
-            // api/status/gh/user/project/path..csproj
-            if(route.Count < 6)
-                return BadRequest();
+            var link = GetGithubLink(user, repo);
 
-            // api/status/gh/{*path} -> {*path} => 
-            route.RemoveRange(0, 4);
+            await _publish.PublishMessageAsync("git-remote-queue", link);
 
-            var formattedRoute = string.Join("/", route);
-
-            _log.LogInformation($"routes: {formattedRoute}");
-
-            var link = GetGithubLink(formattedRoute);
-
-            _log.LogInformation($"link: {link}");
-
-            // var result = await _statusService.GetStatusAsync(link);
-
-            // if (result == null)
-            return NotFound();
-
-            //return Ok(result);
+            return Accepted();
         }
 
-        private string GetGithubLink(string path) => $"https://raw.githubusercontent.com/{path}".TrimEnd('/');
+        private string GetGithubLink(string user, string repo) => $"https://github.com/{user}/{repo}.git";
     }
 }

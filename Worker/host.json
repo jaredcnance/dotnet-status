@@ -1,5 +1,7 @@
 ﻿{
+  "functionTimeout": "00:05:00",
   "queues": {
-    "maxPollingInterval": 1000
+    "maxPollingInterval": 1000,
+    "visibilityTimeout": "00:05:00"
   }
 }

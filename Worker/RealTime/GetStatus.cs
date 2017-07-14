@@ -3,7 +3,10 @@ using DotnetStatus.Core.Services;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
+using Worker.Helpers;
 
 namespace Worker.RealTime
 {
@@ -13,8 +16,12 @@ namespace Worker.RealTime
 
         static GetStatus()
         {
+            var names = Assembly.GetExecutingAssembly().GetModules();
+            BindingRedirect.AddRedirects();
+
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddEnvironmentVariables();
 
             var config = builder.Build();
@@ -31,8 +38,6 @@ namespace Worker.RealTime
                     var repositoryStatus = await service.GetRepositoryStatusAsync(gitRepositoryUrl);
 
                     log.Info("Complete");
-
-                    // TODO: enqueue the status
                 }
             }
             catch (Exception e)

@@ -4,6 +4,7 @@ using LibGit2Sharp;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace DotnetStatus.Core.Services
 {
@@ -16,7 +17,7 @@ namespace DotnetStatus.Core.Services
         private string _transientPath;
 
         public TransientGitService(
-            IOptions<WorkerConfiguration> options, 
+            IOptions<WorkerConfiguration> options,
             IGitCloneService gitService)
         {
             _rootDirectory = options.Value.SourceRootDirectory;
@@ -53,25 +54,55 @@ namespace DotnetStatus.Core.Services
 
         public void Dispose()
         {
-            try
-            {
-                var cleanupAttempts = 0;
-                while(cleanupAttempts < _maxCleanupAttempts)
-                {
-                    DeleteDirectory();
-                    cleanupAttempts++;
-                }
-            }
-            catch (UnauthorizedAccessException uae)
-            {
-                throw new InvalidOperationException($"Unable to delete the source directory {_transientPath}", uae);
-            }            
+            DeleteDirectory(_transientPath);
         }
 
-        private void DeleteDirectory()
+        public void DeleteDirectory(string directoryPath)
         {
-            if (string.IsNullOrWhiteSpace(_transientPath) == false)
-                Directory.Delete(_transientPath, true);
+            if (Directory.Exists(directoryPath) == false) return;
+
+            NormalizeAttributes(directoryPath);
+            DeleteDirectory(directoryPath, initialTimeout: 16, timeoutFactor: 2);
+        }
+
+        private void NormalizeAttributes(string directoryPath)
+        {
+            string[] filePaths = Directory.GetFiles(directoryPath);
+            string[] subdirectoryPaths = Directory.GetDirectories(directoryPath);
+
+            foreach (string filePath in filePaths)
+            {
+                File.SetAttributes(filePath, FileAttributes.Normal);
+            }
+            foreach (string subdirectoryPath in subdirectoryPaths)
+            {
+                NormalizeAttributes(subdirectoryPath);
+            }
+            File.SetAttributes(directoryPath, FileAttributes.Normal);
+        }
+
+        private void DeleteDirectory(string directoryPath, int initialTimeout, int timeoutFactor)
+        {
+            for (int attempt = 1; attempt <= _maxCleanupAttempts; attempt++)
+            {
+                try
+                {
+                    Directory.Delete(directoryPath, true);
+                    return;
+                }
+                catch (UnauthorizedAccessException uae)
+                {
+                    if (attempt < _maxCleanupAttempts)
+                    {
+                        Thread.Sleep(initialTimeout * (int)Math.Pow(timeoutFactor, attempt - 1));
+                        continue;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Unable to delete the source directory {_transientPath}", uae);
+                    }
+                }
+            }
         }
     }
 }

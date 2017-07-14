@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>net461</TargetFrameworks>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
