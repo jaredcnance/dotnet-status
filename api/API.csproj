@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFrameworks>net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
     <AssemblyName>DotnetStatus</AssemblyName>
     <OutputType>Exe</OutputType>
     <StartupObject>DotnetStatus.Program</StartupObject>

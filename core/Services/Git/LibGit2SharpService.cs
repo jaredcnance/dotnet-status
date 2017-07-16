@@ -1,4 +1,5 @@
-﻿using LibGit2Sharp;
+﻿#if NET461
+using LibGit2Sharp;
 using System;
 
 namespace Core.Services.Git
@@ -18,3 +19,4 @@ namespace Core.Services.Git
         }
     }
 }
+#endif

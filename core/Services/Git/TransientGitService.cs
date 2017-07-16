@@ -1,6 +1,5 @@
 ﻿using Core.Services.Git;
 using DotnetStatus.Core.Configuration;
-using LibGit2Sharp;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
