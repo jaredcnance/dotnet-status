@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace DotnetStatus.Core.Services
 {
-    public class GitRepositoryStatusService : IGitRepositoryStatusService
+    public class RepositoryStatusEvaluator : IRepositoryStatusEvaluator
     {
         private readonly ITransientGitService _gitService;
         private readonly IRestoreService _restoreService;
         private readonly IDependencyGraphService _dependencyGraphService;
         private readonly string _dgFileName;
-        private readonly IRepositoryResultService _repository;
+        private readonly IRepositoryResultPersistence _repository;
 
-        public GitRepositoryStatusService(
+        public RepositoryStatusEvaluator(
             ITransientGitService transientGitService,
             IRestoreService restoreService,
             IDependencyGraphService dependencyGraphService,
             IOptions<WorkerConfiguration> options,
-            IRepositoryResultService repository)
+            IRepositoryResultPersistence repository)
         {
             _gitService = transientGitService;
             _restoreService = restoreService;
@@ -29,7 +29,7 @@ namespace DotnetStatus.Core.Services
             _repository = repository;
         }
 
-        public async Task<RepositoryResult> GetRepositoryStatusAsync(string repositoryUrl)
+        public async Task<RepositoryResult> EvaluateAsync(string repositoryUrl)
         {
             var repoPath = _gitService.GetSource(repositoryUrl);
             var status = _restoreService.Restore(repoPath);

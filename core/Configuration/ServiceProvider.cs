@@ -39,7 +39,7 @@ namespace DotnetStatus.Core
 
             builder.Populate(services);
 
-            builder.RegisterType<GitRepositoryStatusService>()
+            builder.RegisterType<RepositoryStatusEvaluator>()
                 .AsImplementedInterfaces();
 
             builder.RegisterType<TransientGitService>()
@@ -67,8 +67,8 @@ namespace DotnetStatus.Core
 
         private void AddRepositoryStatusServices(ContainerBuilder builder)
         {
-            builder.RegisterType<RepositoryResultService>()
-                .As<IRepositoryResultService>();
+            builder.RegisterType<RepositoryResultPersistence>()
+                .As<IRepositoryResultPersistence>();
 
             builder.RegisterInstance(new MongoClient(_config["Data:ConnectionString"]))
                 .As<IMongoClient>();

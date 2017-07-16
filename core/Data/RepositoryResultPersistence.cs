@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace DotnetStatus.Core.Data
 {
-    public class RepositoryResultService : IRepositoryResultService
+    public class RepositoryResultPersistence : IRepositoryResultPersistence
     {
         private readonly IMongoClient _client;
         private readonly DatabaseConfiguration _config;
 
-        public RepositoryResultService(IOptions<DatabaseConfiguration> options, IMongoClient mongoClient)
+        public RepositoryResultPersistence(IOptions<DatabaseConfiguration> options, IMongoClient mongoClient)
         {
             _client = mongoClient;
             _config = options.Value;

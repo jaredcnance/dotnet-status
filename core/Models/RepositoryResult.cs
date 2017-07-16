@@ -6,6 +6,8 @@ namespace DotnetStatus.Core.Models
 {
     public class RepositoryResult
     {
+        public RepositoryResult() { }
+
         public RepositoryResult(string id, RestoreStatus restoreStatus)
         {
             Id = id;

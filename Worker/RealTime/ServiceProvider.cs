@@ -42,7 +42,7 @@ namespace Worker.RealTime
             // a version of Autofac where the 'Populate' method is not defined
             builder.PopulateShim(services);
 
-            builder.RegisterType<GitRepositoryStatusService>()
+            builder.RegisterType<RepositoryStatusEvaluator>()
                 .AsImplementedInterfaces();
 
             builder.RegisterType<TransientGitService>()
@@ -76,8 +76,8 @@ namespace Worker.RealTime
 
         private void AddRepositoryStatusServices(ContainerBuilder builder)
         {
-            builder.RegisterType<RepositoryResultService>()
-                .As<IRepositoryResultService>();
+            builder.RegisterType<RepositoryResultPersistence>()
+                .As<IRepositoryResultPersistence>();
 
             builder.RegisterInstance(new MongoClient(_config["Data:ConnectionString"]))
                 .As<IMongoClient>();

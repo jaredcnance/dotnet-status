@@ -1,10 +1,13 @@
 ﻿using Core.Configuration;
 using Core.Messaging;
+using Core.Services;
+using DotnetStatus.Core.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace DotnetStatus
 {
@@ -31,11 +34,17 @@ namespace DotnetStatus
 
             services.AddMvc();
             services.AddCors();
+            services.AddMemoryCache();
 
             services.AddOptions();
 
             services.Configure<AzureStorageConfiguration>(options => Config.GetSection("AzureStorage").Bind(options));
             services.AddScoped<IPublishStringMessage, AzureQueueService>();
+            services.AddScoped<ICache, Cache>();
+            services.AddScoped<IRepositoryStatusService, RepositoryStatusService>();
+            services.AddScoped<IRepositoryResultPersistence, RepositoryResultPersistence>();
+            services.AddScoped<IMongoClient, MongoClient>();
+            services.Configure<DatabaseConfiguration>(options => Config.GetSection("data").Bind(options));
         }
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)

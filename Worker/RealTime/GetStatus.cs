@@ -34,8 +34,8 @@ namespace Worker.RealTime
             {
                 using (var scope = ServiceProvider.BeginLifetimeScope())
                 {
-                    var service = scope.Resolve<IGitRepositoryStatusService>();
-                    var repositoryStatus = await service.GetRepositoryStatusAsync(gitRepositoryUrl);
+                    var service = scope.Resolve<IRepositoryStatusEvaluator>();
+                    var repositoryStatus = await service.EvaluateAsync(gitRepositoryUrl);
 
                     log.Info("Complete");
                 }
