@@ -1,4 +1,4 @@
-﻿namespace DotnetStatus.Core
+﻿namespace DotnetStatus.Core.Models
 {
     public class PackageResult
     {

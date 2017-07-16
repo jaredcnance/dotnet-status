@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DotnetStatus.Core
+namespace DotnetStatus.Core.Models
 {
     public class FrameworkResult
     {

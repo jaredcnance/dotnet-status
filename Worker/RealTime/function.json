@@ -1,0 +1,14 @@
+﻿{
+  "scriptFile": "..\\bin\\net461\\Worker.dll",
+  "entryPoint": "Worker.RealTime.GetStatus.Run",
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "gitRepositoryUrl",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "git-remote-queue",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}
