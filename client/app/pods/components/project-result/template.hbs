@@ -1,0 +1,20 @@
+<li class="accordion-item" data-accordion-item>
+    <a class="accordion-title">
+        {{project.name}}
+        {{#each upToDateFrameworks as |upToDateFw|}}
+            {{#if upToDateFw}}
+                <span class="positive">{{fa-icon "check"}}</span>
+            {{else}}
+                <span class="negative">{{fa-icon "remove"}}</span>
+            {{/if}}
+        {{/each}}
+    </a>
+    <div class="accordion-content" data-tab-content>
+        <h4>Target Frameworks</h4>
+        {{#zf-accordion allowAllClosed=true}}
+            {{#each project.frameworks as |fw|}}
+                {{framework-result framework=fw}}
+            {{/each}}
+        {{/zf-accordion}}
+    </div>
+</li>

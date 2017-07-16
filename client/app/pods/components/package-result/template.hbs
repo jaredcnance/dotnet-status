@@ -1,2 +1,43 @@
-{{package-result/package-list results=results}}
-{{package-result/package-summary results=results}}
+<li class="accordion-item" data-accordion-item>
+    <a class="accordion-title">
+        {{package.name}} @ {{package.currentVersion}}
+        {{#if package.isUpToDate}}
+            <span class="positive">{{fa-icon "check"}}</span>
+        {{else}}
+            <span class="negative">{{fa-icon "remove"}}</span>
+        {{/if}}
+    </a>
+    <div class="accordion-content" data-tab-content>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Version</th>
+                    <th>NuGet Feed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Requested Version</td>
+                    <td>{{package.currentVersion}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Resolved Version</td>
+                    <td>{{package.resolvedVersion.version}}</td>
+                    <td>{{package.resolvedVersion.source}}</td>
+                </tr>
+                <tr>
+                    <td>Latest Stable</td>
+                    <td>{{package.latestStableVersion.version}}</td>
+                    <td>{{package.latestStableVersion.source}}</td>
+                </tr>
+                <tr>
+                    <td>Latest Version Available</td>
+                    <td>{{package.latestVersion.version}}</td>
+                    <td>{{package.latestVersion.source}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</li>

@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import ENV from 'client/config/environment';
 
-const {$} = Ember;
+const {
+  $
+} = Ember;
 
 export default Ember.Controller.extend({
   searchUrl: null,

@@ -1,0 +1,17 @@
+<li class="accordion-item" data-accordion-item>
+    <a class="accordion-title">{{framework.name}}
+        {{#if isUpToDate}}
+            <span class="positive">{{fa-icon "check"}}</span>
+        {{else}}
+            <span class="negative">{{fa-icon "remove"}}</span>
+        {{/if}}
+    </a>
+    <div class="accordion-content" data-tab-content>
+        <h5>NuGet Packages</h5>
+        {{#zf-accordion allowAllClosed=true}}
+            {{#each framework.packages as |package|}}
+                {{package-result package=package}}
+            {{/each}}
+        {{/zf-accordion}}
+    </div>
+</li>
