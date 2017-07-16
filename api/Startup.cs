@@ -43,7 +43,7 @@ namespace DotnetStatus
             services.AddScoped<ICache, Cache>();
             services.AddScoped<IRepositoryStatusService, RepositoryStatusService>();
             services.AddScoped<IRepositoryResultPersistence, RepositoryResultPersistence>();
-            services.AddScoped<IMongoClient, MongoClient>();
+            services.AddSingleton<IMongoClient>(new MongoClient(Config["Data:ConnectionString"]));
             services.Configure<DatabaseConfiguration>(options => Config.GetSection("data").Bind(options));
         }
 
