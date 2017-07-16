@@ -19,6 +19,8 @@ namespace Core.Services
 
         public async Task<RepositoryResult> FindAsync(string repositoryUrl)
         {
+            repositoryUrl = repositoryUrl.ToLower();
+
             // check cache
             var result = await _cache.GetAsync<RepositoryResult>(repositoryUrl);
             if (result != null)

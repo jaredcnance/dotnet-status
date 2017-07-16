@@ -1,28 +1,29 @@
 <table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Installed</th>
-            <th>Latest Stable</th>
-            <th>Latest</th>
-            <th>Up To Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each results.packages as |package|}}
-            <tr>
-                <td>{{package.name}}</td>
-                <td>{{package.currentVersion}}</td>
-                <td>{{package.latestStableVersion}}</td>
-                <td>{{package.latestVersion}}</td>
-                <td>
-                    {{#if package.upToDate}}
-                        <span class="positive">{{fa-icon "check"}}</span>
-                    {{else}}
-                        <span class="negative">{{fa-icon "remove"}}</span>
-                    {{/if}}
-                </td>
-            </tr>
-        {{/each}}
-    </tbody>
+  <thead>
+    <tr>
+      <th colspan="5">{{results.name}}</th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th>Installed</th>
+      <th>Latest Stable</th>
+      <th>Latest</th>
+      <th>Up To Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each results.outOfDatePackages as |package|}}
+    <tr>
+      <td>{{package.name}}</td>
+      <td>{{package.currentVersion}}</td>
+      <td>{{package.latestStableVersion.version}}</td>
+      <td>{{package.latestVersion.version}}</td>
+      <td>
+        {{#if package.isUpToDate}}
+        <span class="positive">{{fa-icon "check"}}</span> {{else}}
+        <span class="negative">{{fa-icon "remove"}}</span> {{/if}}
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
 </table>
