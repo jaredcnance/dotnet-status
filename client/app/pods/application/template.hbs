@@ -3,11 +3,18 @@
     {{search-bar searchAction=(action "search") loading=loading}}
     {{request-path path=searchUrl}}
 
-    {{#each results.projectResults as |project|}}
-      {{package-result displayResults=displayResults results=project}}
-    {{/each}}
-
     {{#if displayResults}}
+        <center><small>
+                <a href="https://github.com/badges/shields/pull/1028" target="_blank">
+                    Status Badges Coming Soon!
+                </a>
+        </small></center>
+        {{#zf-accordion allowAllClosed=true}}
+            <h3>Projects</h3>
+            {{#each results.projectResults as |project|}}
+                {{project-result project=project}}
+            {{/each}}
+        {{/zf-accordion}}
         <center><small>
             <a href="https://github.com/badges/shields/pull/1028" target="_blank">
                 Status Badges Coming Soon!
@@ -15,6 +22,6 @@
         </small></center>
     {{/if}}
     {{#if displayMessage}}
-      {{message}}
+      <center>{{message}}</center>
     {{/if}}
 </div>

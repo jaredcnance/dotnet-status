@@ -1,15 +1,19 @@
-@import 'base';
-@import 'pod-styles';
+@import 'settings';
+@import 'foundation-sites/foundation';
+@include foundation-everything;
 
-@media (max-width:768px) {
-  @import 'responsive/mobile';
-}
-@media (min-width: 769px) and (max-width: 992px) {
-  @import 'responsive/tablet';
-}
-@media (min-width: 993px) and (max-width: 1200px) {
-  @import 'responsive/desktop';
-}
-@media (min-width: 1201px) {
-  @import 'responsive/jumbo';
+@import 'base'; 
+@import 'pod-styles'; 
+ 
+@media (max-width:768px) { 
+  @import 'responsive/mobile'; 
+} 
+@media (min-width: 769px) and (max-width: 992px) { 
+  @import 'responsive/tablet'; 
+} 
+@media (min-width: 993px) and (max-width: 1200px) { 
+  @import 'responsive/desktop'; 
+} 
+@media (min-width: 1201px) { 
+  @import 'responsive/jumbo'; 
 }
