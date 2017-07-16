@@ -2,12 +2,19 @@
     {{header-menu}}
     {{search-bar searchAction=(action "search") loading=loading}}
     {{request-path path=searchUrl}}
-    {{package-result displayResults=displayResults results=results}}
+
+    {{#each results.projectResults as |project|}}
+      {{package-result displayResults=displayResults results=project}}
+    {{/each}}
+
     {{#if displayResults}}
         <center><small>
             <a href="https://github.com/badges/shields/pull/1028" target="_blank">
-                Status Badges Coming Soon! 
+                Status Badges Coming Soon!
             </a>
         </small></center>
+    {{/if}}
+    {{#if displayMessage}}
+      {{message}}
     {{/if}}
 </div>
