@@ -8,6 +8,11 @@ namespace DotnetStatus.Core.Models
     {
         public RepositoryResult() { }
 
+        public RepositoryResult(string id)
+        {
+            Id = id;
+        }
+
         public RepositoryResult(string id, EvaluationStatus evalStatus)
         {
             Id = id;

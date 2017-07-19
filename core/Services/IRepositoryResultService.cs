@@ -3,7 +3,7 @@ using DotnetStatus.Core.Models;
 
 namespace Core.Services
 {
-    public interface IRepositoryStatusService
+    public interface IRepositoryResultService
     {
         /// <summary>
         /// Find the RepositoryResult by its URL

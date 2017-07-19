@@ -34,7 +34,7 @@ namespace Worker.RealTime
             {
                 using (var scope = ServiceProvider.BeginLifetimeScope())
                 {
-                    var service = scope.Resolve<IRepositoryStatusEvaluator>();
+                    var service = scope.Resolve<IRepositoryResultEvaluator>();
                     var repositoryStatus = await service.EvaluateAsync(gitRepositoryUrl);
 
                     log.Info("Complete");
@@ -50,7 +50,7 @@ namespace Worker.RealTime
         private static string GetErrorMessage(Exception e)
         {
             var error = $"{e.Message} \n  {e.Message} \n {e.StackTrace}";
-            while(e.InnerException != null)
+            while (e.InnerException != null)
             {
                 e = e.InnerException;
                 error += $"\n\n {e.Message} \n  {e.Message} \n {e.StackTrace}";

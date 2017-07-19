@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class RepositoryStatusService : IRepositoryStatusService
+    public class RepositoryResultService : IRepositoryResultService
     {
         private readonly ICache _cache;
         private readonly IRepositoryResultPersistence _resultService;
 
-        public RepositoryStatusService(
+        public RepositoryResultService(
             ICache cache,
             IRepositoryResultPersistence resultService)
         {
@@ -42,7 +42,9 @@ namespace Core.Services
             var repositoryResult = await _resultService.GetAsync(repositoryUrl);
 
             if (repositoryResult == null)
-                repositoryResult = new RepositoryResult(repositoryUrl, evalStatus);
+                repositoryResult = new RepositoryResult(repositoryUrl);
+
+            repositoryResult.EvaluationStatus = evalStatus;
 
             await _resultService.SaveAsync(repositoryResult);
         }

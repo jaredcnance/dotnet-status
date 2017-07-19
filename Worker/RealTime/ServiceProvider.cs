@@ -42,7 +42,7 @@ namespace Worker.RealTime
             // a version of Autofac where the 'Populate' method is not defined
             builder.PopulateShim(services);
 
-            builder.RegisterType<RepositoryStatusEvaluator>()
+            builder.RegisterType<RepositoryResultEvaluator>()
                 .AsImplementedInterfaces();
 
             builder.RegisterType<TransientGitService>()

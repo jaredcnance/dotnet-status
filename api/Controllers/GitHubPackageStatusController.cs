@@ -14,13 +14,13 @@ namespace DotnetStatus.Controllers
     {
         private readonly ILogger<GitHubPackageStatusController> _log;
         private readonly IPublishStringMessage _publish;
-        private readonly IRepositoryStatusService _repoStatus;
+        private readonly IRepositoryResultService _repoStatus;
         private const int ResultTTLMinutes = 1440; // 24 hrs
 
         public GitHubPackageStatusController(
             ILogger<GitHubPackageStatusController> log,
             IPublishStringMessage publish,
-            IRepositoryStatusService repoStatus)
+            IRepositoryResultService repoStatus)
         {
             _log = log;
             _publish = publish;

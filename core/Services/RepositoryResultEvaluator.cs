@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DotnetStatus.Core.Services
 {
-    public class RepositoryStatusEvaluator : IRepositoryStatusEvaluator
+    public class RepositoryResultEvaluator : IRepositoryResultEvaluator
     {
         private readonly ITransientGitService _gitService;
         private readonly IRestoreService _restoreService;
@@ -15,7 +15,7 @@ namespace DotnetStatus.Core.Services
         private readonly string _dgFileName;
         private readonly IRepositoryResultPersistence _repository;
 
-        public RepositoryStatusEvaluator(
+        public RepositoryResultEvaluator(
             ITransientGitService transientGitService,
             IRestoreService restoreService,
             IDependencyGraphService dependencyGraphService,

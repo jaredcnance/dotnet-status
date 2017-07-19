@@ -39,7 +39,7 @@ namespace DotnetStatus.Core
 
             builder.Populate(services);
 
-            builder.RegisterType<RepositoryStatusEvaluator>()
+            builder.RegisterType<RepositoryResultEvaluator>()
                 .AsImplementedInterfaces();
 
             builder.RegisterType<TransientGitService>()

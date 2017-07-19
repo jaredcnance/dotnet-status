@@ -41,7 +41,7 @@ namespace DotnetStatus
             services.Configure<AzureStorageConfiguration>(options => Config.GetSection("AzureStorage").Bind(options));
             services.AddScoped<IPublishStringMessage, AzureQueueService>();
             services.AddScoped<ICache, Cache>();
-            services.AddScoped<IRepositoryStatusService, RepositoryStatusService>();
+            services.AddScoped<IRepositoryResultService, RepositoryResultService>();
             services.AddScoped<IRepositoryResultPersistence, RepositoryResultPersistence>();
             services.AddSingleton<IMongoClient>(new MongoClient(Config["Data:ConnectionString"]));
             services.Configure<DatabaseConfiguration>(options => Config.GetSection("data").Bind(options));

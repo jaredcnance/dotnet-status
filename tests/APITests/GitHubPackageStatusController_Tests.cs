@@ -24,7 +24,7 @@ namespace APITests
             // arrange
             var logger = new Mock<ILogger<GitHubPackageStatusController>>().Object;
             var publishMock = new Mock<IPublishStringMessage>();
-            var repoStatusMock = new Mock<IRepositoryStatusService>();
+            var repoStatusMock = new Mock<IRepositoryResultService>();
             var expectedRepoResult = new RepositoryResult(string.Empty, evalStatus);
             repoStatusMock.Setup(m => m.FindAsync(It.IsAny<string>())).ReturnsAsync(expectedRepoResult);
 
@@ -49,7 +49,7 @@ namespace APITests
             var logger = new Mock<ILogger<GitHubPackageStatusController>>().Object;
             var publishMock = new Mock<IPublishStringMessage>();
 
-            var repoStatusMock = new Mock<IRepositoryStatusService>();
+            var repoStatusMock = new Mock<IRepositoryResultService>();
             repoStatusMock.Setup(m => m.FindAsync(It.IsAny<string>())).ReturnsAsync((RepositoryResult)null);
 
             var controller = new GitHubPackageStatusController(logger, publishMock.Object, repoStatusMock.Object);
@@ -84,7 +84,7 @@ namespace APITests
                 ProjectResults = projectResults
             };
 
-            var repoStatusMock = new Mock<IRepositoryStatusService>();
+            var repoStatusMock = new Mock<IRepositoryResultService>();
             repoStatusMock.Setup(m => m.FindAsync(It.IsAny<string>())).ReturnsAsync(expectedRepoResult);
 
             var controller = new GitHubPackageStatusController(logger, publishMock.Object, repoStatusMock.Object);
