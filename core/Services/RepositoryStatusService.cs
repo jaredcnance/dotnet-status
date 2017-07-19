@@ -19,7 +19,7 @@ namespace Core.Services
 
         public async Task<RepositoryResult> FindAsync(string repositoryUrl)
         {
-            repositoryUrl = repositoryUrl.ToLower();
+            repositoryUrl = FormatUrl(repositoryUrl);
 
             // check cache
             var result = await _cache.GetAsync<RepositoryResult>(repositoryUrl);
@@ -34,5 +34,19 @@ namespace Core.Services
 
             return result;
         }
+
+        public async Task SetStatusAsync(string repositoryUrl, EvaluationStatus evalStatus)
+        {
+            repositoryUrl = FormatUrl(repositoryUrl);
+
+            var repositoryResult = await _resultService.GetAsync(repositoryUrl);
+
+            if (repositoryResult == null)
+                repositoryResult = new RepositoryResult(repositoryUrl, evalStatus);
+
+            await _resultService.SaveAsync(repositoryResult);
+        }
+
+        private string FormatUrl(string repositoryUrl) => repositoryUrl.ToLower();
     }
 }
