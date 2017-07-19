@@ -11,7 +11,7 @@
             ExitCode = exitCode;
             Success = success;
         }
-        
+
         public string Output { get; set; }
         public string Errors { get; set; }
         public int ExitCode { get; set; }

@@ -20,7 +20,7 @@ namespace Worker.RealTime
             BindingRedirect.AddRedirects();
 
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.json", optional: true)
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddEnvironmentVariables();
 
@@ -42,8 +42,20 @@ namespace Worker.RealTime
             }
             catch (Exception e)
             {
-                log.Error("Fail");
+                var message = GetErrorMessage(e);
+                log.Error(message);
             }
+        }
+
+        private static string GetErrorMessage(Exception e)
+        {
+            var error = $"{e.Message} \n  {e.Message} \n {e.StackTrace}";
+            while(e.InnerException != null)
+            {
+                e = e.InnerException;
+                error += $"\n\n {e.Message} \n  {e.Message} \n {e.StackTrace}";
+            }
+            return error;
         }
     }
 }

@@ -44,8 +44,6 @@ namespace DotnetStatus.Core.Services
                 path = $"{_rootDirectory}/{Guid.NewGuid().ToString("N")}";
             while (Directory.Exists(path));
 
-            Directory.CreateDirectory(path);
-
             _transientPath = path;
 
             return path;

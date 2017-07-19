@@ -12,7 +12,7 @@ namespace Core.Services
             _memoryCache = memoryCache;
         }
 
-        #pragma warning disable CS1998
+#pragma warning disable CS1998 // async method lacks 'await' operators and will run synchronously
         public async Task<T> GetAsync<T>(string key)
         {
             // TODO: support distributed caching

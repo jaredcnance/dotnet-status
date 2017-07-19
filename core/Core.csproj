@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <RootNamespace>DotnetStatus.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

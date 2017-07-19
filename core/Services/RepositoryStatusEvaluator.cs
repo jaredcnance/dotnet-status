@@ -40,7 +40,7 @@ namespace DotnetStatus.Core.Services
             var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
             var projectResults = _dependencyGraphService.GetProjectResults(dependencyGraphPath);
 
-            var result = new RepositoryResult(repositoryUrl, status, projectResults);
+            var result = new RepositoryResult(repositoryUrl, EvaluationStatus.Complete, status, projectResults);
 
             await _repository.SaveAsync(result);
 
@@ -49,7 +49,7 @@ namespace DotnetStatus.Core.Services
 
         private async Task<RepositoryResult> GetFailedResultAsync(string repositoryUrl, RestoreStatus status)
         {
-            var failedResult = new RepositoryResult(repositoryUrl, status);
+            var failedResult = new RepositoryResult(repositoryUrl, EvaluationStatus.Failed, status);
 
             await _repository.SaveAsync(failedResult);
 

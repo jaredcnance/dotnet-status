@@ -5,6 +5,14 @@ namespace Core.Services
 {
     public interface IRepositoryStatusService
     {
+        /// <summary>
+        /// Find the RepositoryResult by its URL
+        /// </summary>
         Task<RepositoryResult> FindAsync(string repositoryUrl);
+
+        /// <summary>
+        /// Set the status of a RepositoryResult and create if it does not exist
+        /// </summary>
+        Task SetStatusAsync(string repositoryUrl, EvaluationStatus evalStatus);
     }
 }
