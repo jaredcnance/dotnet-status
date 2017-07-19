@@ -35,8 +35,6 @@ namespace CoreTests.Services.Git
             // assert
             Assert.NotNull(path);
             gitServiceMock.Verify(m => m.Clone(It.Is<string>(s => s == repoUrl), It.IsAny<string>()));
-
-            Assert.True(Directory.Exists(path));
             transientGitService.Dispose();
             Assert.False(Directory.Exists(path));
         }
