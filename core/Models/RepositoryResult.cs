@@ -22,12 +22,15 @@ namespace DotnetStatus.Core.Models
         public RepositoryResult(string id, EvaluationStatus evalStatus, RestoreStatus restoreStatus)
         {
             Id = id;
+
+            EvaluationStatus = evalStatus;
             RestoreStatus = restoreStatus;
         }
 
         public RepositoryResult(string id, EvaluationStatus evalStatus, RestoreStatus restoreStatus, List<ProjectResult> projectResults)
         {
             Id = id;
+            EvaluationStatus = evalStatus;
             RestoreStatus = restoreStatus;
             ProjectResults = projectResults;
         }

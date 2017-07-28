@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NuGet.Common;
@@ -10,7 +9,6 @@ using DotnetStatus.Core.Services;
 using DotnetStatus.Core.Services.NuGet;
 using Core.Services.Git;
 using Core.Services;
-using Microsoft.Extensions.Options;
 using Worker.Helpers;
 
 namespace Worker.RealTime
