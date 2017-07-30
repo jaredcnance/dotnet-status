@@ -1,1 +1,47 @@
-index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1 id="transportName">Unknown Transport</h1>
+
+    <form id="sendmessage">
+        <input type="text" id="data" />
+        <input type="submit" value="Send" />
+    </form>
+
+    <ul id="messages"></ul>
+    <script src="node_modules/signalr-client/dist/browser/signalr-client.js"></script>
+    <script src="utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let transportType = signalR.TransportType[getParameterByName('transport')] || signalR.TransportType.WebSockets;
+
+            document.getElementById('transportName').innerHTML = signalR.TransportType[transportType];
+
+            let url = `http://localhost:5000/sockets/git-package-status`
+            let connection = new signalR.HttpConnection(url, { transport: transportType });
+
+            connection.onDataReceived = data => {
+                let child = document.createElement('li');
+                child.innerText = data;
+                document.getElementById('messages').appendChild(child);
+            };
+
+            document.getElementById('sendmessage').addEventListener('submit', event => {
+                let data = document.getElementById('data').value;
+                connection.send(data);
+                event.preventDefault();
+            });
+
+            connection.start().then(() => {
+                console.log("Opened");
+            }, () => {
+                console.log("Error opening connection");
+            });
+        });
+    </script>
+</body>
+</html>

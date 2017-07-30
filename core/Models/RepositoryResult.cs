@@ -37,7 +37,7 @@ namespace DotnetStatus.Core.Models
 
         [BsonId]
         public string Id { get; set; }
-        public bool Success => RestoreStatus.Success;
+        public bool Success => RestoreStatus?.Success ?? false;
         public RestoreStatus RestoreStatus { get; set; }
         public List<ProjectResult> ProjectResults { get; set; } = new List<ProjectResult>();
         public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;

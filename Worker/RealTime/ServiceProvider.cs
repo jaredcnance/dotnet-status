@@ -67,6 +67,9 @@ namespace Worker.RealTime
             builder.RegisterType<Logger>()
                 .As<ILogger>();
 
+            builder.RegisterType<AzureQueueService>()
+                .AsImplementedInterfaces();
+
             AddRepositoryStatusServices(builder);
 
             Instance = builder.Build();

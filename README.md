@@ -30,3 +30,9 @@ curl "http://dotnet-status.com/api/status/gh/Research-Institute/json-api-dotnet-
 - .Net Core (see `dotnet-status.csproj` for current version)
 - Yarn
 - Ember CLI
+
+#### Installing SignalR Client
+
+```
+npm install signalr-client --registry https://dotnet.myget.org/f/aspnetcore-ci-dev/npm/
+```
