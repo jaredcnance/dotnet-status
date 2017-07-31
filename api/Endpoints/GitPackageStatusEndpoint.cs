@@ -23,7 +23,7 @@ namespace DotnetStatus.EndPoints
         private readonly IConsumeStringMessage _consume;
         private readonly IScheduler _scheduler;
         private readonly TimeSpan _timerInterval = TimeSpan.FromSeconds(5);
-        
+
         private const string CLIENT_MESSAGE_QUEUE = "socket-messages";
         private const string WORKER_MESSAGE_QUEUE = "git-remote-queue";
 
@@ -128,7 +128,7 @@ namespace DotnetStatus.EndPoints
 
             if (currentStatus != EvaluationStatus.Processing)
             {
-                await SendToAsync(connection, "Queuing this repository for processing.");
+                await SendToAsync(connection, "Queuing this repository for processing. Please be patient while waiting for a worker process to connect.");
                 await QueueProcessing(connection.ConnectionId, repositoryUri);
             }
 

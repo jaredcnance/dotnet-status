@@ -13,12 +13,14 @@
                     Status Badges Coming Soon!
                 </a>
         </small></center>
-        {{#zf-accordion allowAllClosed=true}}
+
+        {{#zf-accordion allowAllClosed=true class="margin-center"}}
             <h3>Projects</h3>
             {{#each results.projectResults as |project|}}
                 {{project-result project=project}}
             {{/each}}
         {{/zf-accordion}}
+
         <center><small>
             <a href="https://github.com/badges/shields/pull/1028" target="_blank">
                 Status Badges Coming Soon!

@@ -13,6 +13,7 @@ namespace DotnetStatus
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseSetting(WebHostDefaults.PreventHostingStartupKey, "true")
                 .UseStartup<Startup>()
                 .Build();
     }
