@@ -7,6 +7,7 @@ using DotnetStatus.Core.Models;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace DotnetStatus.Controllers
 {
@@ -16,6 +17,7 @@ namespace DotnetStatus.Controllers
         private readonly IPublishStringMessage _publish;
         private readonly IRepositoryResultService _repoStatus;
         private const int ResultTTLMinutes = 1440; // 24 hrs
+        private const string WORKER_MESSAGE_QUEUE = "git-remote-queue";
 
         public GitHubPackageStatusController(
             ILogger<GitHubPackageStatusController> log,
@@ -74,7 +76,8 @@ namespace DotnetStatus.Controllers
 
         private async Task QueueProcessing(string repositoryUri)
         {
-            await _publish.PublishMessageAsync("git-remote-queue", repositoryUri);
+            var message = JsonConvert.SerializeObject(new SocketMessage(null, repositoryUri));
+            await _publish.PublishMessageAsync(WORKER_MESSAGE_QUEUE, message);
 
             await _repoStatus.SetStatusAsync(repositoryUri, EvaluationStatus.Processing);
         }

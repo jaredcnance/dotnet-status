@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using Core.Configuration;
+using Core.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NuGet.Common;
@@ -31,6 +33,7 @@ namespace Worker.RealTime
 
             services.AddOptions();
 
+            services.Configure<AzureStorageConfiguration>(options => config.GetSection("AzureStorage").Bind(options));
             services.Configure<WorkerConfiguration>(options => config.GetSection("dotnetStatus").Bind(options));
             services.Configure<DatabaseConfiguration>(options => config.GetSection("data").Bind(options));
 
@@ -66,6 +69,9 @@ namespace Worker.RealTime
 
             builder.RegisterType<Logger>()
                 .As<ILogger>();
+
+            builder.RegisterType<AzureQueueService>()
+                .AsImplementedInterfaces();
 
             AddRepositoryStatusServices(builder);
 

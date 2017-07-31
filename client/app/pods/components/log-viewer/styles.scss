@@ -1,0 +1,19 @@
+@import 'app/styles/theme';
+& {
+  margin: 0 10% 10px 10%;
+}
+
+.header {
+  width: 100%;
+  background-color: $light-grey;
+  cursor: pointer;
+  padding-left: 20px;
+}
+
+.content {
+  border: 1px solid $grey-blue;
+  font-size: 0.7em;
+  font-weight: normal;
+  background-color: $dark-grey;
+  color: $light-grey;
+}

@@ -12,7 +12,7 @@ namespace Worker.RealTime
 {
     public static class GetStatus
     {
-        private static IContainer ServiceProvider;
+        private static readonly IContainer ServiceProvider;
 
         static GetStatus()
         {

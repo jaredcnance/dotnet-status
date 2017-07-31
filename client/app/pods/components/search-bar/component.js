@@ -1,8 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  user: 'research-institute',
-  repo: 'json-api-dotnet-core',
+  repo: 'https://github.com/jaredcnance/dotnet-status.git',
 
   actions: {
     search() {
@@ -11,6 +10,6 @@ export default Ember.Component.extend({
   },
 
   _buildUrl() {
-    return `${this.get('user')}/${this.get('repo')}`;
+    return this.get('repo');
   }
 });
