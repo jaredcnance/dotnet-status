@@ -20,7 +20,7 @@ module.exports = function (environment) {
     },
 
     APP: {
-      API_HOST: 'http://localhost:5000/api/status/gh'
+      API_HOST: 'http://localhost:5000/api/status/gh',
       SOCKETS_HOST: 'http://localhost:5000/sockets/git-package-status'
     }
   };
@@ -46,6 +46,7 @@ module.exports = function (environment) {
 
   if (environment === 'production') {
     ENV.APP.API_HOST = 'http://dotnet-status.com/api/status/gh';
+    ENV.APP.SOCKETS_HOST = 'http://dotnet-status.com/sockets/git-package-status';
   }
 
   return ENV;
