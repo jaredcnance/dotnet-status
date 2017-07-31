@@ -13,10 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{91770D58
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "tests\CoreTests\CoreTests.csproj", "{2BB2C560-6114-4C68-A7C4-E2846BE33304}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APITests", "tests\APITests\APITests.csproj", "{8D181C89-2A72-4ED3-A912-A0574FEDBB40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APITests", "tests\APITests\APITests.csproj", "{8D181C89-2A72-4ED3-A912-A0574FEDBB40}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4438B221-51E1-433D-9192-F47C086A93B7}"
 	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
 		README.md = README.md
 	EndProjectSection
 EndProject

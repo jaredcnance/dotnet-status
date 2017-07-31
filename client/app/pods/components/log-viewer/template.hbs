@@ -1,0 +1,18 @@
+<div class="header" {{action "toggle" on="click" }}>
+  {{#if maximized}}
+    {{fa-icon "window-minimize"}}
+  {{else}}
+    {{fa-icon "window-maximize"}}
+  {{/if}}
+  Logs
+</div>
+
+{{#if maximized}}
+  <div class="content">
+    <pre>
+    {{#each content as |msg|}}
+      {{msg}}
+    {{/each}}
+    </pre>
+  </div>
+{{/if}}

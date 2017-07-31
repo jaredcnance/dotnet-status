@@ -21,6 +21,7 @@ module.exports = function (environment) {
 
     APP: {
       API_HOST: 'http://localhost:5000/api/status/gh'
+      SOCKETS_HOST: 'http://localhost:5000/sockets/git-package-status'
     }
   };
 

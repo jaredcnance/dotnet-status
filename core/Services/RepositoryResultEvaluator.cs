@@ -1,4 +1,6 @@
-﻿using DotnetStatus.Core.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using DotnetStatus.Core.Configuration;
 using DotnetStatus.Core.Data;
 using DotnetStatus.Core.Models;
 using DotnetStatus.Core.Services.NuGet;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Core.Messaging;
+using Newtonsoft.Json.Serialization;
 
 namespace DotnetStatus.Core.Services
 {
@@ -38,37 +41,59 @@ namespace DotnetStatus.Core.Services
         public async Task<RepositoryResult> EvaluateAsync(string socketMessageJson)
         {
             var socketMessage = JsonConvert.DeserializeObject<SocketMessage>(socketMessageJson);
+            var respositoryUrl = socketMessage.Message.ToString();
+            var restoreStatus = new RestoreStatus();
+            var projectResults = new List<ProjectResult>();
 
-            await SendToClientAsync(socketMessage, $"Cloning {socketMessage.Message}");
+            try
+            {
+                await SendToClientAsync(socketMessage, $"Request picked up by worker.\nCloning {socketMessage.Message}");
 
-            var repoPath = _gitService.GetSource(socketMessage.Message);
-            
-            await SendToClientAsync(socketMessage, $"Cloned to {repoPath} \n Restoring...");
+                var repoPath = _gitService.GetSource(respositoryUrl);
 
-            var status = _restoreService.Restore(repoPath);
+                await SendToClientAsync(socketMessage, $"Cloned to {repoPath} \n Restoring...");
 
-            await SendToClientAsync(socketMessage, $"Restore exited with status code {status.ExitCode} \n {status.Output}");
+                restoreStatus = _restoreService.Restore(repoPath);
 
-            if (status.Success == false)
-                return await GetFailedResultAsync(socketMessage.Message, status);
+                if (restoreStatus.Success == false)
+                {
+                    await SendToClientAsync(socketMessage, $"{restoreStatus.Output}\nRestore failed with status code {restoreStatus.ExitCode}.");
+                    return await GetFailedResultAsync(respositoryUrl, restoreStatus);
+                }
 
-            var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
-            var projectResults = _dependencyGraphService.GetProjectResults(dependencyGraphPath);
+                await SendToClientAsync(socketMessage, $"{restoreStatus.Output}\nRestore completed successfully with status code {restoreStatus.ExitCode}.\nNow parsing the dependency graph...");
 
-            var result = new RepositoryResult(socketMessage.Message, EvaluationStatus.Complete, status, projectResults);
+                var dependencyGraphPath = $"{repoPath}/{_dgFileName}";
+                projectResults = _dependencyGraphService.GetProjectResults(dependencyGraphPath);
 
-            await SendToClientAsync(socketMessage, $"Completed with evaluation status {result.EvaluationStatus}");
+                var result = new RepositoryResult(respositoryUrl, EvaluationStatus.Complete, restoreStatus, projectResults);
 
-            await _repository.SaveAsync(result);
+                await _repository.SaveAsync(result);
 
-            return result;
+                await SendToClientAsync(socketMessage, $"Completed with evaluation status '{result.EvaluationStatus}'");
+
+                await SendToClientAsync(socketMessage, result, endOfChain: true, completedSuccessfully: true);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                await SendToClientAsync(socketMessage, $"An unexpected failure ocurred. {e.Message} \n{e.StackTrace}.", endOfChain: true);
+
+                return new RepositoryResult(respositoryUrl, EvaluationStatus.Failed, restoreStatus, projectResults);
+            }
         }
 
-        private async Task SendToClientAsync(SocketMessage originalMessage, string text)
+        private async Task SendToClientAsync(SocketMessage originalMessage, object message, bool endOfChain = false, bool completedSuccessfully = false)
         {
-            if(string.IsNullOrWhiteSpace(originalMessage.ConnectionId)) return;
+            if (string.IsNullOrWhiteSpace(originalMessage.ConnectionId)) return;
 
-            var newMessage = JsonConvert.SerializeObject(new SocketMessage(originalMessage.ConnectionId, text));
+            var socketMessage = new SocketMessage(originalMessage.ConnectionId, message, endOfChain, completedSuccessfully);
+
+            var newMessage = JsonConvert.SerializeObject(socketMessage, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
 
             await _publish.PublishMessageAsync(CLIENT_MESSAGE_QUEUE, newMessage);
         }

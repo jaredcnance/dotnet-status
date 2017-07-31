@@ -3,6 +3,10 @@
     {{search-bar searchAction=(action "search") loading=loading}}
     {{request-path path=searchUrl}}
 
+    {{#if requestStarted}}
+      {{log-viewer content=messages maximized=expandLogs}}
+    {{/if}}
+
     {{#if displayResults}}
         <center><small>
                 <a href="https://github.com/badges/shields/pull/1028" target="_blank">
@@ -20,8 +24,5 @@
                 Status Badges Coming Soon!
             </a>
         </small></center>
-    {{/if}}
-    {{#if displayMessage}}
-      <center>{{message}}</center>
     {{/if}}
 </div>

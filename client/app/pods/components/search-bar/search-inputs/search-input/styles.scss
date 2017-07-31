@@ -1,11 +1,16 @@
 @import 'app/styles/theme';
 & {
   margin: 10px;
+
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 input {
   font-size: 1.3em;
-  padding: 10px;
-  width: 300px;
+  padding: 20px;
+  min-width: 200px;
+  width: 100%;
   font-family: $font-body;
+  text-align: center;
 }

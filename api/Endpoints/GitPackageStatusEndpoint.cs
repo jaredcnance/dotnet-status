@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Messaging;
@@ -9,6 +10,7 @@ using DotnetStatus.Core.Services.Scheduling;
 using Microsoft.AspNetCore.Sockets;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DotnetStatus.EndPoints
 {
@@ -48,10 +50,17 @@ namespace DotnetStatus.EndPoints
             if (string.IsNullOrWhiteSpace(messageText) == false)
             {
                 var message = JsonConvert.DeserializeObject<SocketMessage>(messageText);
+
                 var connection = GetConnection(message.ConnectionId);
-                await SendToAsync(connection, message.Message);
+                if (connection != null)
+                    await SendToAsync(connection, message);
+
+                _scheduler.Change(new TimeSpan(0));
             }
-            _scheduler.Change(_timerInterval);
+            else
+            {
+                _scheduler.Change(_timerInterval);
+            }
         }
 
         private ConnectionContext GetConnection(string connectionId)
@@ -69,7 +78,7 @@ namespace DotnetStatus.EndPoints
         {
             Connections.Add(connection);
 
-            await Broadcast($"{connection.ConnectionId} connected");
+            await SendToAsync(connection, $"{connection.ConnectionId} connected");
 
             try
             {
@@ -77,46 +86,29 @@ namespace DotnetStatus.EndPoints
                 {
                     if (connection.Transport.In.TryRead(out var buffer))
                     {
-                        var text = Encoding.UTF8.GetString(buffer);
-                        var result = await _repoStatus.FindAsync(text);
+                        var repositoryUrl = Encoding.UTF8.GetString(buffer);
+                        if (string.IsNullOrWhiteSpace(repositoryUrl))
+                        {
+                            await SendToAsync(connection, "Invalid repository URL", true);
+                            continue;
+                        }
 
-                        result = await GetResultAsync(connection.ConnectionId, text, result);
+                        await SendToAsync(connection, "Checking if this repository has already been processed");
+                        var result = await _repoStatus.FindAsync(repositoryUrl);
 
-                        text = $"{connection.ConnectionId}: {text} => {JsonConvert.SerializeObject(result)}";
+                        await SendToAsync(connection, (result == null ? "Repository not found in database." : $"Repository located with status {result.EvaluationStatus}"));
 
-                        await Broadcast(text);
+                        await GetResultAsync(connection, repositoryUrl, result);
                     }
                 }
             }
             finally
             {
                 Connections.Remove(connection);
-
-                await Broadcast($"{connection.ConnectionId} disconnected");
             }
         }
 
-        private async Task SendToAsync(ConnectionContext connection, string text)
-        {
-            var payload = Encoding.UTF8.GetBytes(text);
-            var tasks = new List<Task>(Connections.Count);
-            await connection.Transport.Out.WriteAsync(payload);
-        }
-
-        private Task Broadcast(string text)
-        {
-            var payload = Encoding.UTF8.GetBytes(text);
-            var tasks = new List<Task>(Connections.Count);
-
-            foreach (var c in Connections)
-            {
-                tasks.Add(c.Transport.Out.WriteAsync(payload));
-            }
-
-            return Task.WhenAll(tasks);
-        }
-
-        private async Task<RepositoryResult> GetResultAsync(string connectionId, string repositoryUri, RepositoryResult result)
+        private async Task<RepositoryResult> GetResultAsync(ConnectionContext connection, string repositoryUri, RepositoryResult result)
         {
             var currentStatus = result?.EvaluationStatus;
 
@@ -124,20 +116,49 @@ namespace DotnetStatus.EndPoints
             {
                 // if it is expired, queue a job to update it
                 if (result.UpdatedAt.AddMinutes(ResultTTLMinutes) <= DateTimeOffset.UtcNow)
-                    await QueueProcessing(connectionId, repositoryUri);
+                {
+                    await SendToAsync(connection, "Re-queueing this repository for processing since it has expired.");
+                    await QueueProcessing(connection.ConnectionId, repositoryUri);
+                }
 
+                await SendToAsync(connection, "Returning historical repository status.");
+                await SendToAsync(connection, result, true, true);
                 return result;
             }
 
             if (currentStatus != EvaluationStatus.Processing)
-                await QueueProcessing(connectionId, repositoryUri);
+            {
+                await SendToAsync(connection, "Queuing this repository for processing.");
+                await QueueProcessing(connection.ConnectionId, repositoryUri);
+            }
 
             return new RepositoryResult(repositoryUri, EvaluationStatus.Processing);
+        }
+
+        private async Task SendToAsync(ConnectionContext connection, object message, bool endOfChain = false, bool completedSuccesfully = false)
+        {
+            var messageJson = JsonConvert.SerializeObject(new SocketMessage(connection.ConnectionId, message, endOfChain, completedSuccesfully), new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+            var payload = Encoding.UTF8.GetBytes(messageJson);
+            await connection.Transport.Out.WriteAsync(payload);
+        }
+
+        private async Task SendToAsync(ConnectionContext connection, SocketMessage message)
+        {
+            var messageJson = JsonConvert.SerializeObject(message, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+            var payload = Encoding.UTF8.GetBytes(messageJson);
+            await connection.Transport.Out.WriteAsync(payload);
         }
 
         private async Task QueueProcessing(string connectionId, string repositoryUri)
         {
             var message = JsonConvert.SerializeObject(new SocketMessage(connectionId, repositoryUri));
+
             await _publish.PublishMessageAsync(WORKER_MESSAGE_QUEUE, message);
 
             await _repoStatus.SetStatusAsync(repositoryUri, EvaluationStatus.Processing);

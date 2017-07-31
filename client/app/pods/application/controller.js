@@ -1,59 +1,71 @@
+/*eslint no-console: ["error", { allow: ["log", warn", "error"] }] */
 import Ember from 'ember';
-import ENV from 'client/config/environment';
 
 const {
-  $
+  inject,
+  A,
 } = Ember;
+
+const {service} = inject;
 
 export default Ember.Controller.extend({
   searchUrl: null,
 
+  requestStarted: false,
   displayResults: false,
+  expandLogs: true,
   results: null,
 
-  displayMessage: false,
-  message: null,
+  messages: A(),
+
+  stream: service(),
+
+  init() {
+    this.get('stream').connect(payload => {
+      this._handleMessage(JSON.parse(payload));
+    });
+    this._super(...arguments);
+  },
+
+  _handleMessage(payload) {
+    let messages = this.get('messages');
+    if (typeof payload.message === 'string') {
+      let payloadMessages = payload.message.split('\n');
+      payloadMessages.forEach(m => {
+        messages.pushObject(m);
+      });
+    }
+
+    if (payload.endOfChain === true) {
+      this.set('loading', false);
+      if (payload.completedSuccessfully === true) {
+        this.set('expandLogs', false);
+        this.set('displayResults', true);
+        this.set('results', payload.message);
+      }
+    }
+  },
 
   actions: {
     search(url) {
-      let hostUrl = `${ENV.APP.API_HOST}/${url}/`;
-      this.set('searchUrl', hostUrl);
-      this._request(hostUrl);
+      this.set('requestStarted', true);
+      this._request(url);
       this.set('loading', true);
     },
   },
 
   _request(url) {
     this.set('displayResults', false);
-    this.set('displayMessage', false);
-    $.get(url)
-      .then((result, statusText, xhr) => {
-        this.set('loading', false);
-        if (xhr.status === 200) {
-          this._displayResults(result);
-        } else {
-          this._displayMessage(
-            'This repository is pending evaluation. Please check back in a few minutes.',
-          );
-        }
-      })
-      .catch(() => {
-        this.set('loading', false);
-        this._displayMessage(
-          'An error ocurred while trying to process your request.',
-        );
-      });
+    this.get('stream').send(url);
   },
 
   _displayResults(result) {
     this.set('displayResults', true);
-    this.set('displayMessage', false);
     this.set('results', result);
   },
 
   _displayMessage(msg) {
     this.set('displayResults', false);
-    this.set('displayMessage', true);
     this.set('message', msg);
   },
 });

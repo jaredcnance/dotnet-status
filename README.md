@@ -33,6 +33,9 @@ curl "http://dotnet-status.com/api/status/gh/Research-Institute/json-api-dotnet-
 
 #### Installing SignalR Client
 
+Since npm doesn't support per-package registries in package.json, there is an extra step required to 
+use the SignalR pre-release client:
+
 ```
 npm install signalr-client --registry https://dotnet.myget.org/f/aspnetcore-ci-dev/npm/
 ```
